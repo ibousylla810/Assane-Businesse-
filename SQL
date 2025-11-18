@@ -1,0 +1,49 @@
+CREATE DATABASE IF NOT EXISTS assane_business;
+USE assane_business;
+
+-- Table des produits
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    brand VARCHAR(100),
+    price DECIMAL(10, 2) NOT NULL,
+    category VARCHAR(50),
+    sizes TEXT,
+    image VARCHAR(500),
+    stock INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table des commandes
+CREATE TABLE orders (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    order_number VARCHAR(50) UNIQUE NOT NULL,
+    fullname VARCHAR(255) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(255),
+    address TEXT NOT NULL,
+    zipcode VARCHAR(10),
+    city VARCHAR(100),
+    payment VARCHAR(50),
+    items JSON,
+    total DECIMAL(10, 2),
+    status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table des clients
+CREATE TABLE customers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    fullname VARCHAR(255),
+    phone VARCHAR(20) UNIQUE,
+    email VARCHAR(255),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Insérer des produits exemples
+INSERT INTO products (name, brand, price, category, sizes, stock) VALUES
+('Boxer Classic Noir', 'Premium Collection', 24.99, 'homme,boxer', 'S,M,L,XL', 50),
+('Boxer Sport Gris', 'Athletic Series', 29.99, 'homme,boxer', 'S,M,L,XL,XXL', 35),
+('Slip Confort Blanc', 'Essential Line', 19.99, 'homme,slip', 'S,M,L,XL', 60),
+('Boxer Long Marine', 'Premium Collection', 34.99, 'homme,boxer', 'M,L,XL', 25);
