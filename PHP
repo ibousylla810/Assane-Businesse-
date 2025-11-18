@@ -1,0 +1,90 @@
+<?php
+// Configuration de la base de données
+$host = 'localhost';
+$dbname = 'assane_business';
+$username = 'root';
+$password = ''fatherland8102009;
+
+// Connexion à la base de données
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    die("Erreur de connexion: " . $e->getMessage());
+}
+
+// Headers CORS
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+// Traitement de la commande
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $data = json_decode(file_get_contents('php://input'), true);
+    
+    // Validation des données
+    if (!isset($data['fullname']) || !isset($data['phone']) || !isset($data['address'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Données manquantes']);
+        exit;
+    }
+    
+    // Enregistrer la commande
+    $sql = "INSERT INTO orders (order_number, fullname, phone, email, address, zipcode, city, payment, items, total, order_date) 
+            VALUES (:order_number, :fullname, :phone, :email, :address, :zipcode, :city, :payment, :items, :total, NOW())";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':order_number' => $data['orderNumber'],
+        ':fullname' => $data['fullname'],
+        ':phone' => $data['phone'],
+        ':email' => $data['email'] ?? '',
+        ':address' => $data['address'],
+        ':zipcode' => $data['zipcode'],
+        ':city' => $data['city'],
+        ':payment' => $data['payment'],
+        ':items' => json_encode($data['items']),
+        ':total' => $data['total']
+    ]);
+    
+    // Envoi SMS avec API Orange (Exemple pour l'Afrique)
+    sendSMSWithOrange($data);
+    
+    echo json_encode(['success' => true, 'orderId' => $pdo->lastInsertId()]);
+}
+
+// Fonction d'envoi SMS avec Orange API
+function sendSMSWithOrange($orderData) {
+    $url = 'https://api.orange.com/smsmessaging/v1/outbound/tel%3A%2B33612345678/requests';
+    
+    $message = "COMMANDE {$orderData['orderNumber']}\n";
+    $message .= "Client: {$orderData['fullname']}\n";
+    $message .= "Tel: {$orderData['phone']}\n";
+    $message .= "Total: {$orderData['total']}€";
+    
+    $data = [
+        'outboundSMSMessageRequest' => [
+            'address' => 'tel:+221779540148',
+            'senderAddress' => 'tel:+221779540148',
+            'outboundSMSTextMessage' => [
+                'message' => $message
+            ]
+        ]
+    ];
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Authorization: Bearer YOUR_ACCESS_TOKEN'
+    ]);
+    
+    $result = curl_exec($ch);
+    curl_close($ch);
+    
+    return $result;
+}
+?>
