@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASSANE Business - Sous-vêtements Premium</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>ASSANE Business</h1>
+                    <span class="tagline">Sous-vêtements Premium</span>
+                </div>
+                <div class="nav-items">
+                    <a href="#produits">Produits</a>
+                    <a href="#contact">Contact</a>
+                    <div class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="cart-count">0</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Collection Exclusive de Sous-vêtements</h2>
+            <p>Qualité Premium - Livraison Rapide - Service Client 24/7</p>
+            <div class="contact-info">
+                <i class="fas fa-phone"></i>
+                <span>+33 6 12 34 56 78</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filtres -->
+    <section class="filters">
+        <div class="container">
+            <button class="filter-btn active" data-category="all">Tous</button>
+            <button class="filter-btn" data-category="homme">Homme</button>
+            <button class="filter-btn" data-category="femme">Femme</button>
+            <button class="filter-btn" data-category="boxer">Boxers</button>
+            <button class="filter-btn" data-category="slip">Slips</button>
+        </div>
+    </section>
+
+    <!-- Produits -->
+    <section id="produits" class="products">
+        <div class="container">
+            <h2>Nos Produits</h2>
+            <div class="product-grid" id="product-list">
+                <!-- Les produits seront ajoutés dynamiquement ici -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Panier -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Votre Panier</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total">
+                <h3>Total: <span id="total-price">0</span> €</h3>
+            </div>
+            <button id="checkout-btn" class="btn-primary">Commander</button>
+        </div>
+    </div>
+
+    <!-- Modal Commande -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Finaliser votre commande</h2>
+            <form id="order-form">
+                <div class="form-group">
+                    <label>Nom complet *</label>
+                    <input type="text" id="fullname" required>
+                </div>
+                <div class="form-group">
+                    <label>Téléphone *</label>
+                    <input type="tel" id="phone" pattern="[0-9]{10}" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="email">
+                </div>
+                <div class="form-group">
+                    <label>Adresse de livraison *</label>
+                    <textarea id="address" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Code Postal *</label>
+                    <input type="text" id="zipcode" pattern="[0-9]{5}" required>
+                </div>
+                <div class="form-group">
+                    <label>Ville *</label>
+                    <input type="text" id="city" required>
+                </div>
+                <div class="form-group">
+                    <label>Mode de paiement</label>
+                    <select id="payment">
+                        <option value="cash">Paiement à la livraison</option>
+                        <option value="card">Carte bancaire</option>
+                        <option value="mobile">Mobile Money</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Confirmer la commande</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>ASSANE Business</h3>
+                    <p>Votre boutique de confiance pour des sous-vêtements de qualité</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-phone"></i> +33 6 12 34 56 78</p>
+                    <p><i class="fas fa-envelope"></i> contact@assane-business.com</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Suivez-nous</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
